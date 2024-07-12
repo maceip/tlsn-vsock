@@ -1,9 +1,9 @@
 {
 	"name": "xyz.mac.mac",
 	"description": "socket() access for tlsnotary via a websoket proxy",
-	"path": "~/Library/Application\ Support/Google/Chrome/NativeMessagingHosts/xyz.mac.mac/tlsn-vsock"
+	"path": "/Users/rpm/Library/Application\ Support/Google/Chrome/NativeMessagingHosts/xyz.mac.mac/tlsn-vsock"
 	"type": "stdio",
 	"allowed_origins": [
-		"chrome-extension://mkmlplhjpifmedkfaclonmjcjnjichnc/"
+		"chrome-extension://pkhpobfhlcnokfpghmmnghklcopolada"
 	]
 }
