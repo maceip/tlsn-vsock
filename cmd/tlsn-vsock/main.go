@@ -10,11 +10,27 @@ import (
 	"os/exec"
 	"strings"
 	"time"
+	"log"
 
 	gvntypes "github.com/containers/gvisor-tap-vsock/pkg/types"
 	gvnvirtualnetwork "github.com/containers/gvisor-tap-vsock/pkg/virtualnetwork"
 	"golang.org/x/net/websocket"
+	"github.com/kardianos/service"
 )
+
+var logger service.Logger
+
+type program struct{}
+
+func (p *program) Start(s service.Service) error {
+	// Start should not block. Do the actual work async.
+	go p.run()
+	return nil
+}
+func (p *program) Stop(s service.Service) error {
+	// Stop should not block. Return with a few seconds.
+	return nil
+}
 
 const (
 	gatewayIP = "192.168.127.1"
@@ -23,6 +39,28 @@ const (
 )
 
 func main() {
+	svcConfig := &service.Config{
+		Name:        "TlsnWebsockifyProxy",
+		DisplayName: "TLSNotary Websockify Proxy",
+		Description: "allows the browser to do MPC on a tlsn session via a websocket -> tcp tunnel",
+	}
+
+	prg := &program{}
+	s, err := service.New(prg, svcConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+	logger, err = s.Logger(nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = s.Run()
+	if err != nil {
+		logger.Error(err)
+	}
+}
+
+func (p *program) run() {
 	var portFlags sliceFlags
 	flag.Var(&portFlags, "p", "map port between host and guest (host:guest). -mac must be set correctly.")
 	var (
