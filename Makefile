@@ -1,4 +1,10 @@
-CMD_DESTDIR ?= /usr/local
+ARCH=`gcc -dumpmachine`
+ifeq "$(findstring mac, $(ARCH))" "mac"
+CMD_DESTDIR ?= ~/Library/Application\ Support/Google/Chrome/NativeMessagingHosts
+else
+CMD_DESTDIR ?= ~/.config/google-chrome/NativeMessagingHosts
+endif
+
 PREFIX ?= $(CURDIR)/out/
 
 PKG=github.com/maceip/tlsn-vsock
@@ -18,7 +24,8 @@ tlsn-vsock:
 
 
 install:
-	install -D -m 755 $(PREFIX)/tlsn-vsock $(CMD_DESTDIR)/bin
+	mkdir -p $(CMD_DESTDIR)/xyz.mac.mac/
+	install  -m 755 $(PREFIX)/tlsn-vsock $(CMD_DESTDIR)/xyz.mac.mac/
 
 artifacts: clean
 	GOOS=linux GOARCH=amd64 make tlsn-vsock
