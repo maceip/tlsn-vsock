@@ -22,10 +22,7 @@ install:
 
 artifacts: clean
 	GOOS=linux GOARCH=amd64 make tlsn-vsock
-	tar -C $(PREFIX) --owner=0 --group=0 -zcvf $(PREFIX)/container2wasm-$(VERSION)-linux-amd64.tar.gz tlsn-vsock
-
-	GOOS=linux GOARCH=arm64 make tlsn-vsock
-	tar -C $(PREFIX) --owner=0 --group=0 -zcvf $(PREFIX)/container2wasm-$(VERSION)-linux-arm64.tar.gz tlsn-vsock
+	tar -C $(PREFIX) --owner=0 --group=0 -zcvf $(PREFIX)/build-$(VERSION)-linux-amd64.tar.gz tlsn-vsock
 
 	rm -f $(PREFIX)/tlsn-vsock
 
